@@ -3,6 +3,8 @@ package org.naruto.dao;
 import org.naruto.domain.BoardVO;
 
 public interface BoardDAO extends CrudDAO<BoardVO, Long> {
+	
 	public int getCount();
 	
+	public boolean updateViewCnt(Long bno);
 }
