@@ -29,6 +29,7 @@ public class MemberDAOImpl implements MemberDAO {
 		System.out.println(result);
 		return result;
 	}
+	
 	@Override
 	public MemberVO select(MemberVO vo) {
 		MemberVO result = null;
@@ -57,7 +58,7 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 
 	@Override
-	public List<MemberVO> getList(PagingDTO dto) {
+	public List<MemberVO> selectList(PagingDTO dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -75,8 +76,9 @@ public class MemberDAOImpl implements MemberDAO {
 		
 		dao.insert(vo);
 	}
+	
 	@Override
-	public MemberVO select(String key) {
+	public MemberVO selectOne(String key) {
 		// TODO Auto-generated method stub
 		return null;
 	}

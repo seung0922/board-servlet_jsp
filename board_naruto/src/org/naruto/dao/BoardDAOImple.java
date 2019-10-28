@@ -9,26 +9,27 @@ import org.naruto.dto.PagingDTO;
 import org.naruto.util.MyBatisLoader;
 
 public class BoardDAOImple implements BoardDAO {
+
 	private SqlSessionFactory factory = MyBatisLoader.INSTANCE.getFactory();
+
 	@Override
-	public BoardVO select(Long bno) {
+	public BoardVO selectOne(Long bno) {
 		BoardVO result = null;
 		try {
-		
+
 			SqlSession session = factory.openSession();
-			 result = session.selectOne("org.naruto.dao.BoardMapper.select",bno);
-			 System.out.println(result);
-		}catch(Exception e) {
+			result = session.selectOne("org.naruto.dao.BoardMapper.selectOne", bno);
+			System.out.println(result);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
 
-
 	public static void main(String[] args) {
-		BoardDAO dao = new BoardDAOImple();
-		BoardVO vo = new BoardVO();
-		PagingDTO dto = new PagingDTO();
+//		BoardDAO dao = new BoardDAOImple();
+//		BoardVO vo = new BoardVO();
+//		PagingDTO dto = new PagingDTO();
 //		dao.getCount();
 //		dto.setPage(5);
 //		dto.setAmount(10);
@@ -42,22 +43,21 @@ public class BoardDAOImple implements BoardDAO {
 //		dao.select(5L);
 	}
 
-
 	@Override
 	public boolean insert(BoardVO vo) {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		int a = 0;
 		try {
-		
+
 			SqlSession session = factory.openSession();
-			 a = session.insert("org.naruto.dao.BoardMapper.insert",vo);
-			 session.commit();
-			 System.out.println(result);
-		}catch(Exception e) {
+			a = session.insert("org.naruto.dao.BoardMapper.insert", vo);
+			session.commit();
+			System.out.println(result);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		result=a==1?true:false;
+		result = a == 1 ? true : false;
 		return result;
 	}
 
@@ -65,13 +65,13 @@ public class BoardDAOImple implements BoardDAO {
 	public boolean update(BoardVO vo) {
 		boolean result = false;
 		try {
-		
+
 			SqlSession session = factory.openSession();
-			 int upd = session.update("org.naruto.dao.BoardMapper.update",vo);
-			 session.commit();
-			 result=upd==1?true:false;
-			 System.out.println(result);
-		}catch(Exception e) {
+			int upd = session.update("org.naruto.dao.BoardMapper.update", vo);
+			session.commit();
+			result = upd == 1 ? true : false;
+			System.out.println(result);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
@@ -81,45 +81,65 @@ public class BoardDAOImple implements BoardDAO {
 	public boolean delete(Long key) {
 		boolean result = false;
 		try {
-		
+
 			SqlSession session = factory.openSession();
-			int del = session.update("org.naruto.dao.BoardMapper.delete",key);
-			 session.commit();
-			 result=del==1?true:false;
-			 System.out.println(result);
-		}catch(Exception e) {
+			int del = session.update("org.naruto.dao.BoardMapper.delete", key);
+			session.commit();
+			result = del == 1 ? true : false;
+			System.out.println(result);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
 
 	@Override
-	public List<BoardVO> getList(PagingDTO dto) {
+	public List<BoardVO> selectList(PagingDTO dto) {
 		List<BoardVO> result = null;
 
-		try (SqlSession session = factory.openSession()) {
-			
-			result = session.selectList("org.naruto.dao.BoardMapper.selectList",dto);
+		try {
+			SqlSession session = factory.openSession();
+			result = session.selectList("org.naruto.dao.BoardMapper.selectList", dto);
 			System.out.println(result);
-			  
-		}catch (Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
+
 	@Override
 	public int getCount() {
+
 		int result = 0;
+
 		try {
-			
+
 			SqlSession session = factory.openSession();
-			 result = session.selectOne("org.naruto.dao.BoardMapper.getCount");
-			 System.out.println(result);
-		}catch(Exception e) {
+			result = session.selectOne("org.naruto.dao.BoardMapper.getCount");
+			System.out.println(result);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return result;
 	}
-	
+
+	@Override
+	public boolean updateViewCnt(Long bno) {
+		int result = 0;
+
+		try(SqlSession session = factory.openSession()) {
+
+			result = session.update("org.naruto.dao.BoardMapper.updateViewCnt", bno);
+//			session.commit();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return result == 1;
+	}
+
 }
