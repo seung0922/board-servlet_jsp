@@ -14,20 +14,17 @@ public class BoardDAOImpl implements BoardDAO {
 
 	public static void main(String[] args) {
 		
+		BoardDAO dao = new BoardDAOImpl();
 		BoardVO vo = new BoardVO();
 		
-		System.out.println(vo);
+		// insert
+//		vo.setTitle("제목ㅎㅎ...");
+//		vo.setContent("내용ㅎㅎ...");
+//		vo.setWriter("작성자ㅎㅎ...");
+//		dao.insert(vo);
 		
-		BoardDAO dao = new BoardDAOImpl();
-		
-		vo.setBno(11L);
-		vo.setTitle("제목");
-		vo.setContent("내용");
-		vo.setWriter("작성자");
-		
-		System.out.println(vo);
-		
-		dao.insert(vo);
+		// select
+		dao.selectOne(100L);
 		
 	}
 

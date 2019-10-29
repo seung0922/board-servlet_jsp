@@ -16,8 +16,8 @@ public class PageMaker {
 	private int total;
 	private PagingDTO paging;
 
-	// 객체를 만드는 제약조건 생성자
 	public PageMaker(int total, PagingDTO paging) {
+		
 		super();
 		this.total = total;
 		this.paging = paging;
@@ -31,6 +31,7 @@ public class PageMaker {
 		this.end = tempEnd > realEnd ? realEnd : tempEnd;
 
 		this.next = this.end * paging.getAmount() < total;
+		
 	}
 
 	public static void main(String[] args) {
