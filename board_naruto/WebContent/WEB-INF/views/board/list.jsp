@@ -54,7 +54,11 @@
 		<li><a href="/board/list?page=${pm.end+1}&amount=${pm.paging.amount}">다음</a></li>
 	</c:if>
 	
-	
 </ul>
+
+<form action="/board/register" method="get">
+<button>글쓰기</button>
+</form>
+
 </body>
 </html>

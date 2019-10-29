@@ -27,9 +27,9 @@ public class BoardDAOImple implements BoardDAO {
 	}
 
 	public static void main(String[] args) {
-		BoardDAO dao = new BoardDAOImple();
-		BoardVO vo = new BoardVO();
-		PagingDTO dto = new PagingDTO();
+//		BoardDAO dao = new BoardDAOImple();
+//		BoardVO vo = new BoardVO();
+//		PagingDTO dto = new PagingDTO();
 //		dao.getCount();
 //		dto.setPage(5);
 //		dto.setAmount(10);
@@ -95,7 +95,7 @@ public class BoardDAOImple implements BoardDAO {
 	}
 
 	@Override
-	public List<BoardVO> getList(PagingDTO dto) {
+	public List<BoardVO> selectList(PagingDTO dto) {
 		List<BoardVO> result = null;
 
 		try {
@@ -130,9 +130,10 @@ public class BoardDAOImple implements BoardDAO {
 	public boolean updateViewCnt(Long bno) {
 		int result = 0;
 
-		try(SqlSession session = factory.openSession();) {
+		try(SqlSession session = factory.openSession()) {
 
 			result = session.update("org.naruto.dao.BoardMapper.updateViewCnt", bno);
+//			session.commit();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

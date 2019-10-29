@@ -14,5 +14,5 @@ public interface CrudDAO<V,K> {
 	
 	public boolean delete(K key);
 	
-	public List<V> getList(PagingDTO dto);
+	public List<V> selectList(PagingDTO dto);
 }

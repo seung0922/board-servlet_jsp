@@ -24,6 +24,24 @@ public class BoardController extends BasicController {
 		dao = new BoardDAOImple();
 	}
 
+	@RequestMapping(value = "/board/list", type = "GET")
+	public String list(HttpServletRequest req, HttpServletResponse res) throws Exception {
+
+		// 파라미터 수집 -> pageDTO 변환
+		PagingDTO dto = new PagingDTO(req.getParameter("page"), req.getParameter("amount"));
+		
+		//Model 완성
+
+		req.setAttribute("list", dao.selectList(dto));
+		req.setAttribute("pm", new PageMaker(dao.getCount(),dto));
+		
+		req.setAttribute("pm", new PageMaker(dao.getCount(), dto));
+
+		System.out.println("list...............");
+
+		return "/board/list";
+	}
+	
 	@RequestMapping(value = "/board/register", type = "GET")
 	public String add(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
@@ -31,37 +49,27 @@ public class BoardController extends BasicController {
 
 		return "/board/register";
 	}
-
-	@RequestMapping(value = "/board/list", type = "GET")
-	public String list(HttpServletRequest req, HttpServletResponse res) throws Exception {
-
-		// 파라미터 수집 -> pageDTO 변환
-		PagingDTO dto = new PagingDTO(req.getParameter("page"), req.getParameter("amount"));
-
-		// Model 완성
-		req.setAttribute("list", dao.getList(dto));
-		req.setAttribute("pm", new PageMaker(dao.getCount(), dto));
-
-		System.out.println("list...............");
-
-		return "/board/list";
-	}
-
+	
 	@RequestMapping(value = "/board/register", type = "POST")
-	public String addPost(HttpServletRequest req, HttpServletResponse res) throws Exception {
-
+	public String addPost(HttpServletRequest req,
+			HttpServletResponse res)throws Exception {
+		
 		String title = req.getParameter("title");
 		String content = req.getParameter("content");
 		String writer = req.getParameter("writer");
-
+//		String file = req.getParameter("file");
+		
+//		System.out.println("파일이름" + file);
+		
 		BoardVO vo = new BoardVO();
-
+		
 		vo.setTitle(title);
 		vo.setContent(content);
 		vo.setWriter(writer);
-
+		
 		boolean insert = dao.insert(vo);
-
+		
+		
 		System.out.println(insert);
 		System.out.println("add.post.................");
 		System.out.println(req.getParameter("title"));
@@ -69,6 +77,58 @@ public class BoardController extends BasicController {
 		return "redirect:/list";
 	}
 
+	@RequestMapping(value = "/board/read", type = "GET")
+	public String Read(HttpServletRequest req, HttpServletResponse res) {
+
+		// RecentView에 쿠키 존재하는지 체크한 뒤 쿠키있으면 targetCookie에 저장
+		Cookie targetCookie = checkCookieExist(req, "RecentView");
+
+		// 조회수 쿠키를 확인한다. - RecentViewCookie => existCookie
+		boolean existCookie = targetCookie != null;
+
+		// 값을 가져오고 %로 분리
+		// 해당 bno값이 있는지 확인 - already
+		boolean already = checkCookieValue(targetCookie, req.getParameter("bno"), "%");
+
+		System.out.println("targetCookie" + targetCookie);
+		System.out.println("already : " + already);
+
+		long bno = Long.parseLong(req.getParameter("bno"));
+		
+		// 예전에 해당 글을 본 적이 없으면 조회수 올려줌
+		if (already == false) {
+			dao.updateViewCnt(bno);
+		}
+		
+		// bno에 해당하는 글 attr에 셋해줌
+		req.setAttribute("board", dao.selectOne(bno));
+		
+		// 쿠키가 존재하지 않으면 RecentView 쿠키 생성 
+		if (existCookie == false) {
+			
+			Cookie ck = new Cookie("RecentView", bno + "%");
+			ck.setMaxAge(60 * 60 * 24); // a day (하루동안 유지)
+			ck.setPath("/board");
+			
+			res.addCookie(ck);
+			
+			System.out.println("신규쿠키발행");
+			
+		} else {	// 쿠키 있음
+			
+			String value = targetCookie.getValue();
+
+			// 있는 쿠키 값 뒤에 계속 bno% 집어넣음
+			value += bno + "%";
+			targetCookie.setValue(value);
+
+			res.addCookie(targetCookie);
+
+		}
+		
+		return "/board/read";
+	}
+	
 	@RequestMapping(value = "/board/delete", type = "get")
 	public String deleteGet(HttpServletRequest req, HttpServletResponse res) {
 
@@ -84,78 +144,6 @@ public class BoardController extends BasicController {
 		System.out.println(delete);
 
 		return "redirect:/list";
-	}
-
-	@RequestMapping(value = "/board/read", type = "GET")
-	public String Read(HttpServletRequest req, HttpServletResponse res) {
-
-		// Cookie targetCookie = checkCookieExist(req, 쿠키이름)
-
-		// existCookie = targetCookie == null;
-
-		// already = checkCookieValue(bno, '%');
-
-		// 조회수 쿠키를 확인한다. - RecentViewCookie => existCookie
-		// 값을 가져오고 %로 분리
-		// 해당 bno값이 있는지 확인 - already
-
-		// if already가 false라면
-		// 조회시에 update 하고 가져온다.
-		// else
-
-//		long bno = Long.parseLong(req.getParameter("bno"));
-
-//		req.setAttribute("board", dao.selectOne(bno));
-
-		// existCookie false
-		// RecentViewCookie 생성
-
-		// tagetCookie에
-		Cookie targetCookie = checkCookieExist(req, "RecentView");
-		boolean existCookie = targetCookie != null;
-
-		boolean already = checkCookieValue(targetCookie, req.getParameter("bno"), "%");
-
-		System.out.println("targetCookie" + targetCookie);
-		System.out.println("already : " + already);
-
-		// Cookie targetCookie = checkCookieExist (req,쿠키이름)
-		// existCookie = targetCookie == null;
-		// already = checkCookieValue(bno,'%');
-
-		// 조회수 쿠키를 확인한다. -RecentViewCookie =>existCookies
-		// 값을 가져오고 %로 분리
-		// 해당 bno값이 있는지 확인 - already
-
-		// if already가 false라면
-		// 조회시에 update하고 가져온다.
-		// else
-		long bno = Long.parseLong(req.getParameter("bno"));
-		if (already == false) {
-			dao.updateViewCnt(bno);
-		}
-		
-		req.setAttribute("board", dao.selectOne(bno));
-		
-		// exisCookiew false
-		// RecentViewCookie 생성하고 response추가
-		if (existCookie == false) {
-			Cookie ck = new Cookie("RecentView", bno + "%");
-			ck.setMaxAge(60 * 60 * 24); // a day
-			ck.setPath("/board");
-			res.addCookie(ck);
-			System.out.println("신규쿠키발행");
-		} else {// 있음
-			String value = targetCookie.getValue();
-
-			value += bno + "%";
-			targetCookie.setValue(value);
-
-			res.addCookie(targetCookie);
-
-		}
-
-		return "/board/read";
 	}
 
 }

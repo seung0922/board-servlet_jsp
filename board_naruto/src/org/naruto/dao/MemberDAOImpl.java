@@ -58,7 +58,7 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 
 	@Override
-	public List<MemberVO> getList(PagingDTO dto) {
+	public List<MemberVO> selectList(PagingDTO dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
