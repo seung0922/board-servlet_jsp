@@ -1,5 +1,9 @@
 package org.dr.dao;
 
-public class MemberDAO {
+import org.dr.domain.MemberVO;
 
+public interface MemberDAO extends CrudDAO<MemberVO, String> {
+	
+	public MemberVO selectOne(MemberVO vo);
+	
 }
