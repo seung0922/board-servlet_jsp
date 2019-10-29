@@ -92,7 +92,7 @@ public class MemberController extends BasicController {
     	HttpSession session = request.getSession();
     	session.invalidate();
     
-    	return "redirect:/login?msg=logout";	
+    	return "redirect:/login?msg=logout";
     }
     @RequestMapping(value="/member/myPage", type="GET")
 	protected String myPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

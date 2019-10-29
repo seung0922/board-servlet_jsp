@@ -18,8 +18,6 @@ import javax.servlet.http.HttpSession;
 @WebFilter("/member/myPage")
 public class LoginFilter implements Filter {
 
-
-
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
