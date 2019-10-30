@@ -45,12 +45,8 @@ public class LoginFilter implements Filter {
 		
 		HttpSession session = req.getSession();
 		
-		System.out.println("dddddddasdfsdfsdf");
-		
 		if(session.getAttribute("result") == null) {
 			System.out.println("fail");
-			
-			String msg = "fail";
 			
 			res.sendRedirect("/member/login");
 			return;

@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -73,12 +74,12 @@
 @import "bourbon";
 
 body {
-	background: #eee !important;	
+	background: #eee !important;
 }
 
-.wrapper {	
+.wrapper {
 	margin-top: 80px;
-  margin-bottom: 80px;
+	margin-bottom: 80px;
 }
 
 .register-for {
@@ -87,51 +88,57 @@ body {
 	font-size: 18px;
 }
 
-
-
 .form-signin {
-  max-width: 380px;
-  padding: 15px 35px 45px;
-  margin: 0 auto;
-  background-color: #fff;
-  border: 1px solid rgba(0,0,0,0.1);  
-
-  .form-signin-heading,
-	.checkbox {
-	  margin-bottom: 30px;
-	}
-
-	.checkbox {
-	  font-weight: normal;
-	}
-
-	.form-control {
-	  position: relative;
-	  font-size: 16px;
-	  height: auto;
-	  padding: 10px;
-		@include box-sizing(border-box);
-
-		&:focus {
-		  z-index: 2;
-		}
-	}
-
-	input[type="text"] {
-	  margin-bottom: -1px;
-	  border-bottom-left-radius: 0;
-	  border-bottom-right-radius: 0;
-	}
-
-	input[type="password"] {
-	  margin-bottom: 20px;
-	  border-top-left-radius: 0;
-	  border-top-right-radius: 0;
-	}
+	max-width: 380px;
+	padding: 15px 35px 45px;
+	margin: 0 auto;
+	background-color: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	.
+	form-signin-heading
+	,
+	.checkbox
+	{
+	margin-bottom
+	:
+	30px;
 }
 
+.checkbox {
+	font-weight: normal;
+}
+
+.form-control {
+	position: relative;
+	font-size: 16px;
+	height: auto;
+	padding: 10px;
+	@
+	include
+	box-sizing(border-box);
+	&:
+	focus
+	{
+	z-index
+	:
+	2;
+}
+
+}
+input[type="text"] {
+	margin-bottom: -1px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+input[type="password"] {
+	margin-bottom: 20px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+}
 </style>
-	
+
 
 </head>
 <body>
@@ -174,20 +181,32 @@ body {
 
 
 				<!-- login form  -->
-	  <div class="wrapper">
-    <form class="form-signin" method="POST">
-      <h2 class="form-signin-heading">Please login</h2>
-      <input type="text" class="form-control" name="mem_id" placeholder="ID" required="" autofocus="" />
-      <input type="password" class="form-control" name="mem_pw" placeholder="Password" required=""/>      
-      <label class="checkbox">
-        <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
-      </label>
-      <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="chk()">Login</button>
-          <a class="register-for" href="/member/join">register for</a>
-    </form>
-    
-  </div>
-  
+				<div class="wrapper">
+					<form class="form-signin" method="POST">
+						<h2 class="form-signin-heading">Please login</h2>
+						<input type="text" class="form-control" name="mem_id"
+							placeholder="ID" required="" autofocus="" /> <input
+							type="password" class="form-control" name="mem_pw"
+							placeholder="Password" required="" /> <label class="checkbox">
+							<input type="checkbox" value="remember-me" id="rememberMe"
+							name="rememberMe"> Remember me
+						</label>
+						<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+						<a class="register-for" href="/member/join">register for</a>
+					</form>
+				</div>
+
+				<script type="text/javascript">
+				
+					var m = "${param.msg}";
+					
+					if(m == "fail") {
+						alert("아이디 혹은 비밀번호가 틀렸습니다.");
+					} else if(m == "sss") {
+						alret("가입완료");
+					}
+				</script>
+
 				<div class="modal"></div>
 				<!-- Optional JavaScript -->
 				<!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -221,15 +240,9 @@ body {
 
 	<!-- MAIN JS -->
 	<script src="js/main.js"></script>
-	
-	
-	<script type="text/javascript">
-		var m = "${param.msg}";
-		
-		if(m == "fail") {
-			alert("다시 입력하세요.");
-		}
-	</script>
+
+
+
 
 </body>
 </html>

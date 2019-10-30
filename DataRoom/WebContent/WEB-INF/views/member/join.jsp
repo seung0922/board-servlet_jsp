@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -10,6 +11,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <title>Marble &mdash; Free HTML5 Bootstrap Website Template by
 	FreeHTML5.co</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -76,7 +78,24 @@
         <!-- Custom style -->
         <link rel="stylesheet" href="../plugin/bootstrap/css/style.css" media="screen" title="no title" charset="utf-8">
 
-	
+<style type="text/css">
+select {
+  width: 150px;
+  padding: .8em .5em;
+  font-family: inherit;
+  background: url(https://farm1.staticflickr.com/379/19928272501_4ef877c265_t.jpg) no-repeat 95% 50%;  
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: 1px solid #999;
+  border-radius: 0px;
+}
+
+select::-ms-expand { /* for IE 11 */
+    display: none;
+}
+
+</style>	
 
 </head>
 <body>
@@ -123,30 +142,51 @@
                 </div>
             </div>
             <div class="col-sm-6 col-md-offset-3">
-                <form role="form" method="POST">
+                <form role="form" method="POST" onSubmit="return check()">
                     <div class="form-group">
                         <label for="inputId">아이디</label>
-                        <input type="text" class="form-control" required name="mem_id" id="mem_id" placeholder="아이디를 입력해 주세요" >
-                    	<a class="btn btn-info" onclick="IdCheck()">중복확인</a>
+                        <input type="text" class="form-control" required minlength="4" name="mem_id" id="mem_id" placeholder="아이디를 입력해 주세요 (4글자 이상)">
+                    	<a class="btn btn-info" onclick="confirmId(this.form)">중복확인</a>
                     </div>
                     <div class="form-group">
                         <label for="inputPassword">비밀번호</label>
-                        <input type="password" class="form-control" required name="mem_pw" id="mem_pw" placeholder="비밀번호를 입력해주세요">
+                        <input type="password" class="form-control" required minlength="4" name="mem_pw" id="mem_pw" placeholder="비밀번호를 입력해주세요 (4글자 이상)">
                     </div>
-                     <!-- <div class="form-group">
+                     <div class="form-group">
                         <label for="inputPasswordCheck">비밀번호 확인</label>
-                        <input type="password" class="form-control" id="inputPasswordCheck" placeholder="비밀번호 확인을 위해 다시한번 입력 해 주세요">
-                    </div> -->
+                        <input type="password" class="form-control" id="mem_pw_chk" placeholder="비밀번호 확인을 위해 다시한번 입력 해 주세요">
+                    </div>
                     <div class="form-group">
                         <label for="inputName">이름</label>
                         <input type="text" class="form-control" required name="mem_name" id="mem_name" placeholder="이름을 입력해 주세요">
                     </div>
                     <div class="form-group">
                         <label for="inputMobile">생년월일</label>
-                        <input type="date" class="form-control" required name="mem_birth" id="mem_birth">
+                        <!-- <input type="date" class="form-control" required name="mem_birth" id="mem_birth"> -->
+						<div>
+						
+                        <select name="year">
+                        <c:forEach var="num" begin="1930" end="2019" step="1">
+						   <option value=${num}>${num}</option>
+						</c:forEach>
+						</select>
+						
+						<select name="month">
+                        <c:forEach var="num" begin="1" end="12" step="1">
+						   <option value=${num}>${num}</option>
+						</c:forEach>
+						</select>
+						
+						<select name="day">
+                        <c:forEach var="num" begin="1" end="31" step="1">
+						   <option value=${num}>${num}</option>
+						</c:forEach>
+						</select>
+						</div>
+						
                     </div>
                     <div class="form-group">
-                        <label for="inputGender">성별</label>
+                        <label for="inputGender" >성별</label>
                         <div>
 						<input type="radio" required name="mem_sex" value="1">남
 						<input type="radio" required name="mem_sex" value="2">여
@@ -154,11 +194,11 @@
                     </div>
                     <div class="form-group">
                         <label for="InputEmail">이메일</label>
-                        <input type="text" class="form-control" required name="mem_email" id="mem_email" placeholder="이메일 주소를 입력해주세요">
+                        <input type="email" class="form-control" required name="mem_email" id="mem_email" placeholder="이메일 주소를 입력해주세요">
                     </div>
                     <div class="form-group">
                         <label for="inputMobile">휴대폰 번호</label>
-                        <input type="text" class="form-control" required name="mem_pn" id="mem_pn" placeholder="휴대폰번호를 입력해 주세요">
+                        <input type="tel" class="form-control" required name="mem_pn" id="mem_pn" placeholder="휴대폰번호를 입력해 주세요">
                     </div>
 
                     <div class="form-group text-center">
@@ -170,7 +210,6 @@
 	                        
                 </form>
             
-            
             </div>
 
         </article>
@@ -178,7 +217,60 @@
 		</div>
 	</div>
 	
-
+	<script>
+		// submit 하기 전에 체크해주는 함수
+		function check() {
+			// 아이디 글자 수 체크
+			if($('#mem_id').val().length < 4) {
+				alert("아이디를 4글자 이상 입력해주세요.");
+				return false;
+			}
+			
+			
+			if($('#mem_id').val().search(/[^a-z0-9]/gi) != -1) {
+				alert("아이디는 영문과 숫자만 입력 가능합니다.");
+				return false;
+			}
+			
+			// 비밀번호 글자 수 체크
+			if($('#mem_pw').val().length < 4) {
+				alert("비밀번호를 4글자 이상 입력해주세요.");
+				return false;
+			}
+			
+			// 비밀번호 같은지 체크
+			if($('#mem_pw').val() != $('#mem_pw_chk').val()) {
+			    alert("비밀번호가 서로 다릅니다.");
+			    // false를 하면 submit 취소
+			    return false;
+			}
+			
+		}
+		
+		// 아이디 중복확인 해주는 함수
+		function confirmId() {
+			var engNum = /^[a-zA-Z0-9]*$/;
+			
+			var mem_id_val = $('#mem_id').val();
+			
+			// 영어, 숫자만 있는지 체크
+			if(engNum.test($('#mem_id').val()) == false) {
+				mem_id_val = "fail";
+			}
+			
+			// 길이 체크
+			if(mem_id_val.length < 4) {
+				mem_id_val = "sizeMiss";
+			}
+			
+			// 아이디 값을 가져와서 파라미터로 넣음
+			url = "/member/confirm?id=" + mem_id_val;
+			
+			open(url, "confirm","width=300, height=200");
+		}
+	
+	</script>
+	
 	<!-- jQuery -->
 	<script src="js/jquery.min.js"></script>
 	<!-- jQuery Easing -->

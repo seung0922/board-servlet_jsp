@@ -22,9 +22,7 @@ public class MemberVOImpl implements MemberDAO {
 		try {
 
 			SqlSession session = factory.openSession();
-			System.out.println("타기전");
 			a = session.insert("org.dr.dao.MemberMapper.join", vo);
-			System.out.println("탄 후");
 
 			session.commit();
 
@@ -59,15 +57,17 @@ public class MemberVOImpl implements MemberDAO {
 
 	@Override
 	public MemberVO selectOne(MemberVO vo) {
-
+		
 		MemberVO result = null;
 
 		try {
-
+			
 			SqlSession session = factory.openSession();
+			
 			result = session.selectOne("org.dr.dao.MemberMapper.selectOne", vo);
 
 		} catch (Exception e) {
+			System.out.println("예외발생");
 			e.printStackTrace();
 		}
 
@@ -80,6 +80,26 @@ public class MemberVOImpl implements MemberDAO {
 	public MemberVO selectOne(String key) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String confirmId(String mem_id) {
+		String result = "";
+
+		try {
+			
+			SqlSession session = factory.openSession();
+			
+			result = session.selectOne("org.dr.dao.MemberMapper.confirmId", mem_id);
+
+		} catch (Exception e) {
+			System.out.println("예외발생");
+			e.printStackTrace();
+		}
+
+		System.out.println(result);
+
+		return result;
 	}
 
 }

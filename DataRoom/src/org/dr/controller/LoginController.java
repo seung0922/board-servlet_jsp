@@ -62,6 +62,12 @@ public class LoginController extends HttpServlet {
 		MemberVO result = dao.selectOne(vo);
 		
 		System.out.println("result: " + result);
+		
+		// 입력된 값이 없는 값이면
+		if(result == null) {
+			response.sendRedirect("/member/login?msg=fail");
+			return;
+		}
     	
     	HttpSession session = request.getSession();
     	

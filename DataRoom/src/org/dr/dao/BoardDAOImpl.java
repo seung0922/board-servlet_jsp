@@ -12,22 +12,6 @@ public class BoardDAOImpl implements BoardDAO {
 
 	private SqlSessionFactory factory = MyBatisLoader.INSTANCE.getFactory();
 
-	public static void main(String[] args) {
-		
-		BoardDAO dao = new BoardDAOImpl();
-		BoardVO vo = new BoardVO();
-		
-		// insert
-//		vo.setTitle("제목ㅎㅎ...");
-//		vo.setContent("내용ㅎㅎ...");
-//		vo.setWriter("작성자ㅎㅎ...");
-//		dao.insert(vo);
-		
-		// select
-		dao.selectOne(100L);
-		
-	}
-
 	// 게시물 등록
 	public boolean insert(BoardVO vo) {
 		boolean result = false;
